@@ -38,10 +38,18 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class TextDemo extends JPanel implements ActionListener {
-    protected JTextField textField;
+    
+	private static final long serialVersionUID = 1L;
+	
+	
+	
+	protected JTextField textField;
     protected JTextArea textArea;
     private final static String newline = "\n";
 
+    
+    
+    
     public TextDemo() {
         super(new GridBagLayout());
 
