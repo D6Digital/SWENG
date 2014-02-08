@@ -41,7 +41,7 @@ public class HelloWorld extends JLabel{
 	        frame.add(button1);
 	        
 	        //Display the window.
-	        frame.pack();
+	        frame.pack(); 
 	        frame.setVisible(true);
 	    }
 
