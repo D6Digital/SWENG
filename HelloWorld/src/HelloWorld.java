@@ -6,7 +6,7 @@ import javax.swing.JLabel;
 
 
 /**
- * @author Sam pick
+ * @author Sam
  */
 public class HelloWorld extends JLabel{
 
