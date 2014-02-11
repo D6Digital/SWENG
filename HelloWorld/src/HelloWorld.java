@@ -5,6 +5,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 
+/**
+ * @author Sam pick
+ */
 public class HelloWorld extends JLabel{
 
 	/**
@@ -13,12 +16,22 @@ public class HelloWorld extends JLabel{
 	private static final long serialVersionUID = 1L;
 	
 	
-	
-	 public HelloWorld(String text) {
+	/**
+	 * constructor for HelloWorld
+	 * sets the size of the JLabel and string
+	 */
+	public HelloWorld(String text) {
 		super(text);
 		this.setBounds(0, 0, 40, 20);
 	}
 
+	
+	/**
+	 * Creates the JFrame and adds
+	 * a JButton and the HelloWorld JLabel
+	 * using no layout manager so that
+	 * specific co-ordinates can be used
+	 */
 	private static void createAndShowGUI() {
 	        //Create and set up the window.
 	        JFrame frame = new JFrame("Hello Label");
@@ -26,7 +39,7 @@ public class HelloWorld extends JLabel{
 	        frame.setLayout(null);
 	        
 	        // Not using a layout manager so a size for the frame
-	        // should be decided otherwise the minimum is nothing
+	        // should be declared otherwise the minimum is nothing
 	        Dimension minimumSize = new Dimension(600, 400);
 	        frame.setMinimumSize(minimumSize);
 	        
