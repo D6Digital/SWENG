@@ -45,7 +45,7 @@ public class TextDemo extends JPanel implements ActionListener {
 	
 	protected JTextField textField;
     protected JTextArea textArea;
-    private final static String newline = "\n";
+    private final static String newline = "\n"; 
 
     
     

@@ -41,7 +41,7 @@ public class HelloWorld extends JLabel{
 	        // Not using a layout manager so a size for the frame
 	        // should be declared otherwise the minimum is nothing
 	        Dimension minimumSize = new Dimension(600, 400);
-	        frame.setMinimumSize(minimumSize);
+	        frame.setMinimumSize(minimumSize); 
 	        
 	        String text = "Hello World!";
 	        
