@@ -1,7 +1,14 @@
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.sql.Time;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
@@ -13,23 +20,25 @@ import uk.co.caprica.vlcj.player.embedded.videosurface.CanvasVideoSurface;
 import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
 
-public class Display extends JPanel{
+public class Display implements ActionListener, MouseListener{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	
 	
 	//Create  Canvas
     //static Painter MyCanvas = new Painter();
 
 	//protected static int iteration;
     
-	
-	
+	protected static JButton PlayButton;
+	protected static EmbeddedMediaPlayer mediaPlayer;
+	protected static Painter randompanel;
+	protected static JPanel vidControlPanel;
+	protected static JPanel vidpanel;
+	protected static JFrame frame;
     
 	public Display() {
 		super();
+		
 	}
 
 //	private static void topLevelLoop(int i)
@@ -50,40 +59,62 @@ public class Display extends JPanel{
 	private static void createAndShowGUI()
 	{
 		NativeLibrary.addSearchPath(
-                RuntimeUtil.getLibVlcLibraryName(), "C:/Program Files/VideoLAN/VLC"
+                RuntimeUtil.getLibVlcLibraryName(), "vlc-2.0.1"
             );
 	
     	
         Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);	
 		
-	JFrame frame = new JFrame("Display");
+	frame = new JFrame("Display");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    JPanel vidpanel = new JPanel();
-    Painter randompanel = new Painter();
-    JButton PlayButton = new JButton("PLAY!");
+    vidpanel = new JPanel();
+    vidControlPanel = new JPanel();
+    randompanel = new Painter();
+    PlayButton = new JButton("PAUSE");
+    
+
+    
+    JLayeredPane layerPane = new JLayeredPane();
     
     
     frame.setLayout(null);
-    Dimension minimumSize = new Dimension(800, 600);
+    layerPane.setLayout(null);
+    layerPane.setOpaque(false);
+    Dimension minimumSize = new Dimension(1600, 1000);
     frame.setMinimumSize(minimumSize);
+    layerPane.setBounds(0,0,1600,1000);
     
     Canvas canvas = new Canvas();
     MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory();
     CanvasVideoSurface videoSurface = mediaPlayerFactory.newVideoSurface(canvas);
-    EmbeddedMediaPlayer mediaPlayer = mediaPlayerFactory.newEmbeddedMediaPlayer();
+    mediaPlayer = mediaPlayerFactory.newEmbeddedMediaPlayer();
     mediaPlayer.setVideoSurface(videoSurface);
     canvas.setBounds(0, 0, 720, 276);
     vidpanel.setBounds(0, 0, 720, 276);
-    randompanel.setBounds(0, 280, 720, 200);
+    vidControlPanel.setBounds(200, 260, 500, 100);
+    randompanel.setBounds(0, 220, 720, 200);
+    randompanel.setOpaque(false);
     vidpanel.add(canvas);
-    randompanel.add(PlayButton);
+    vidControlPanel.add(PlayButton);
+    vidControlPanel.setOpaque(false);
+    Display exampleD = new Display();
+    
+    PlayButton.setActionCommand("Play/Pause");
+    PlayButton.addActionListener(exampleD);
+    
+    //vidpanel.addMouseListener(exampleD);
+    frame.addMouseListener(exampleD);
+    
+    mediaPlayer.setEnableMouseInputHandling(false);
+    mediaPlayer.setEnableKeyInputHandling(false);
+    canvas.addMouseListener(exampleD);
+    layerPane.add(randompanel,3);
+    layerPane.add(vidpanel,4);
+    layerPane.add(vidControlPanel,-1);
     
     
     
-    frame.add(randompanel);
-    frame.add(vidpanel);
-    
-    
+    frame.add(layerPane);
     
     //Display the window.
     frame.pack();
@@ -91,9 +122,17 @@ public class Display extends JPanel{
     
     randompanel.repaint();
     
-    mediaPlayer.playMedia("bin/Captain America.mp4");
+    mediaPlayer.playMedia("bin/avengers.mp4");
+    
+    
     
 	}
+	    	 
+			 
+			
+    
+    
+	
 	
 
 
@@ -119,7 +158,81 @@ public class Display extends JPanel{
 	                //new Timer(delay, taskPerformer).start();
 	            }
 	      });
+		 
 		
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		if("Play/Pause".equals(e.getActionCommand()))
+				{
+				if("PLAY".equals(PlayButton.getText())){
+					PlayButton.setText("PAUSE");
+					mediaPlayer.play();
+					for (int i = 0; i > -20; i--) {
+						randompanel.setXcoord((randompanel.getXcoord()+i));
+						randompanel.repaint();
+						vidControlPanel.repaint();
+					}
+				}
+					
+				else {
+					if("PAUSE".equals(PlayButton.getText())){
+						PlayButton.setText("PLAY");
+						mediaPlayer.pause();
+						for (int i = 0; i < 20; i++) {
+							randompanel.setXcoord((randompanel.getXcoord()+i));
+							randompanel.repaint();
+							vidControlPanel.repaint();
+						}
+					}
+					
+				}
+				}
+		
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		if(e.getComponent().getParent()!=null)
+		{
+			vidpanel.setBounds(e.getComponent().getParent().getX()+e.getX(), e.getComponent().getParent().getY()+e.getY(), 720, 276);
+			frame.pack();
+			vidpanel.repaint();
+		}
+		else
+		{
+			vidpanel.setBounds(e.getX(),e.getY(), 720, 276);
+			frame.pack();
+			vidpanel.repaint();
+		}
 		
 	}
 	
