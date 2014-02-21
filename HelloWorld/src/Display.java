@@ -1,11 +1,10 @@
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.Time;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
@@ -72,14 +71,15 @@ public class Display implements ActionListener, MouseListener{
     randompanel = new Painter();
     PlayButton = new JButton("PAUSE");
     
-
+    vidControlPanel.setForeground(Color.BLUE);
+    vidControlPanel.setBackground(Color.BLACK);
+    vidControlPanel.setOpaque(false);
     
     JLayeredPane layerPane = new JLayeredPane();
     
     
     frame.setLayout(null);
     layerPane.setLayout(null);
-    layerPane.setOpaque(false);
     Dimension minimumSize = new Dimension(1600, 1000);
     frame.setMinimumSize(minimumSize);
     layerPane.setBounds(0,0,1600,1000);
@@ -93,10 +93,8 @@ public class Display implements ActionListener, MouseListener{
     vidpanel.setBounds(0, 0, 720, 276);
     vidControlPanel.setBounds(200, 260, 500, 100);
     randompanel.setBounds(0, 220, 720, 200);
-    randompanel.setOpaque(false);
     vidpanel.add(canvas);
     vidControlPanel.add(PlayButton);
-    vidControlPanel.setOpaque(false);
     Display exampleD = new Display();
     
     PlayButton.setActionCommand("Play/Pause");
@@ -109,8 +107,8 @@ public class Display implements ActionListener, MouseListener{
     mediaPlayer.setEnableKeyInputHandling(false);
     canvas.addMouseListener(exampleD);
     layerPane.add(randompanel,3);
+    layerPane.add(vidControlPanel,0);
     layerPane.add(vidpanel,4);
-    layerPane.add(vidControlPanel,-1);
     
     
     
@@ -171,7 +169,7 @@ public class Display implements ActionListener, MouseListener{
 				if("PLAY".equals(PlayButton.getText())){
 					PlayButton.setText("PAUSE");
 					mediaPlayer.play();
-					for (int i = 0; i > -20; i--) {
+					for (int i = 0; i > -30; i--) {
 						randompanel.setXcoord((randompanel.getXcoord()+i));
 						randompanel.repaint();
 						vidControlPanel.repaint();
@@ -182,7 +180,7 @@ public class Display implements ActionListener, MouseListener{
 					if("PAUSE".equals(PlayButton.getText())){
 						PlayButton.setText("PLAY");
 						mediaPlayer.pause();
-						for (int i = 0; i < 20; i++) {
+						for (int i = 0; i < 30; i++) {
 							randompanel.setXcoord((randompanel.getXcoord()+i));
 							randompanel.repaint();
 							vidControlPanel.repaint();
@@ -223,15 +221,42 @@ public class Display implements ActionListener, MouseListener{
 	public void mouseReleased(MouseEvent e) {
 		if(e.getComponent().getParent()!=null)
 		{
-			vidpanel.setBounds(e.getComponent().getParent().getX()+e.getX(), e.getComponent().getParent().getY()+e.getY(), 720, 276);
-			frame.pack();
-			vidpanel.repaint();
+			//vidpanel.setBounds(e.getComponent().getParent().getX()+e.getX(), e.getComponent().getParent().getY()+e.getY(), 720, 276);
+			//frame.pack();
+			//vidpanel.repaint();
+			
+			
+			
+			if("PLAY".equals(PlayButton.getText())){
+				PlayButton.setText("PAUSE");
+				mediaPlayer.play();
+				for (int i = 0; i > -20; i--) {
+					randompanel.setXcoord((randompanel.getXcoord()+i));
+					randompanel.repaint();
+					vidControlPanel.repaint();
+				}
+			}
+				
+			else {
+				if("PAUSE".equals(PlayButton.getText())){
+					PlayButton.setText("PLAY");
+					mediaPlayer.pause();
+					for (int i = 0; i < 20; i++) {
+						randompanel.setXcoord((randompanel.getXcoord()+i));
+						randompanel.repaint();
+						vidControlPanel.repaint();
+					}
+				}
+				
+			}
 		}
 		else
 		{
 			vidpanel.setBounds(e.getX(),e.getY(), 720, 276);
 			frame.pack();
 			vidpanel.repaint();
+			
+			
 		}
 		
 	}
