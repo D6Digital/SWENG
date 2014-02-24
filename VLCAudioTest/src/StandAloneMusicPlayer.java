@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -41,8 +42,13 @@ import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import uk.co.caprica.vlcj.player.embedded.videosurface.CanvasVideoSurface;
+import uk.co.caprica.vlcj.player.list.MediaList;
+import uk.co.caprica.vlcj.player.list.MediaListPlayer;
+import uk.co.caprica.vlcj.player.list.MediaListPlayerEventAdapter;
+import uk.co.caprica.vlcj.player.list.MediaListPlayerMode;
 import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 import uk.co.caprica.vlcj.test.basic.PlayerControlsPanel;
+import uk.co.caprica.vlcj.test.list.TestMediaListEmbeddedPlayer;
 
 /**
  * @author Josh Lant
@@ -59,10 +65,12 @@ public class StandAloneMusicPlayer {
     static JList playContents = new JList(listModel);
     static Container contentPane;
     static EmbeddedMediaPlayer mediaPlayer;
+    static MediaList mediaList;
     private static final long serialVersionUID = 1L;
     static String currentPlayIndex;
     //static String currentFilePath = "H:\\Users\\Dr. Gabber\\Desktop\\Work Programs\\eclipse-jee-juno-SR2-win32-x86_64\\eclipse\\SWENG\\VLCAudioTest\\Playlist";
-    static String currentFilePath = "C:\\xtemp\\SWENG\\VLCAudioTest\\Playlist";
+   // static String currentFilePath = "C:\\xtemp\\SWENG\\VLCAudioTest\\Playlist";
+    static String currentFilePath = "M:\\Year 2\\Engineering for Hearing and Voice\\Lab 1- Week 3\\Audio Samples";
     static String newFilePath = currentFilePath;
     static FileChooser fileChooser = new FileChooser(newFilePath);
     static Boolean isPaused = false;
@@ -272,14 +280,104 @@ public class StandAloneMusicPlayer {
     }
 
 
-	private static EmbeddedMediaPlayer openMediaPlayer() {
-	    final EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
-	    final EmbeddedMediaPlayer mediaPlayer = mediaPlayerComponent.getMediaPlayer();
-	    
-	    mainFrame.setContentPane(mediaPlayerComponent);
-	    contentPane.add(mediaPlayerComponent, BorderLayout.EAST);
-	    
-	    return mediaPlayer;
-	}
+//	private static EmbeddedMediaPlayer openMediaPlayer() {
+//	    final EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
+//	    final EmbeddedMediaPlayer mediaPlayer = mediaPlayerComponent.getMediaPlayer();
+//	    MediaListPlayer mediaListPlayer;
+//	    MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory();
+//
+//	    
+//	    mediaList = mediaPlayerFactory.newMediaList();
+//	    mediaListPlayer = mediaPlayerFactory.newMediaListPlayer();
+//	    mediaListPlayer.setMediaPlayer(mediaPlayer);
+//	    
+//	    String[] options = {};
+//	    ArrayList<String> thing = getFilenames(newFilePath);
+//	    
+//	    for(String filename: thing) {
+//	    mediaList.addMedia(filename, options);
+//	    }
+//	    
+//	  
+//	    mediaListPlayer.setMediaList(mediaList);
+//        mediaListPlayer.setMode(MediaListPlayerMode.LOOP);
+//	    
+//	    
+//	    mainFrame.setContentPane(mediaPlayerComponent);
+//	    contentPane.add(mediaPlayerComponent, BorderLayout.EAST);
+//	    //contentPane.add(mediaListPlayer, BorderLayout.EAST);
+//	    return mediaPlayer;
+//	}
+	
+	   private static EmbeddedMediaPlayer openMediaPlayer() {
+	       MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory();
+
+	        Canvas canvas = new Canvas();
+	        canvas.setBackground(Color.black);
+	        CanvasVideoSurface videoSurface = mediaPlayerFactory.newVideoSurface(canvas);
+
+	        EmbeddedMediaPlayer mediaPlayer = mediaPlayerFactory.newEmbeddedMediaPlayer();
+	        mediaPlayer.setVideoSurface(videoSurface);
+
+	        MediaListPlayer mediaListPlayer = mediaPlayerFactory.newMediaListPlayer();
+
+//	        mediaListPlayer.addMediaListPlayerEventListener(new MediaListPlayerEventAdapter() {
+//	            @Override
+//	            public void nextItem(MediaListPlayer mediaListPlayer, libvlc_media_t item, String itemMrl) {
+//	                System.out.println("nextItem()");
+//	            }
+//	        });
+
+	        mediaListPlayer.setMediaPlayer(mediaPlayer); // <--- Important, associate the media player with the media list player
+
+	        JPanel cp = new JPanel();
+	        cp.setBackground(Color.black);
+	        cp.setLayout(new BorderLayout());
+	        cp.add(canvas, BorderLayout.CENTER);
+
+	        JFrame f = new JFrame("vlcj embedded media list player test");
+	        f.setIconImage(new ImageIcon(TestMediaListEmbeddedPlayer.class.getResource("/icons/vlcj-logo.png")).getImage());
+	        f.setContentPane(cp);
+	        f.setSize(800, 600);
+	        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        f.setVisible(true);
+
+	        MediaList mediaList = mediaPlayerFactory.newMediaList();
+	      String[] options = {};
+	      ArrayList<String> thing = getFilenames(newFilePath);
+	      String beg = "M:\\Year 2\\Engineering for Hearing and Voice\\Lab 1- Week 3\\Audio Samples\\";
+	      for(String filename: thing) {
+	      mediaList.addMedia(newFilePath + "\\" + filename, options);
+	      }
+	      int x = mediaList.size();
+//	      for(int y = 1; y < x-1; y++) {
+//	          mediaList.removeMedia(0);
+//	      }
+	        mediaListPlayer.setMediaList(mediaList);
+	        mediaListPlayer.setMode(MediaListPlayerMode.LOOP);
+
+	        mediaListPlayer.play();
+
+	        // This looping is just for purposes of demonstration, ordinarily you would
+	        // not do this of course
+	        for(;;) {
+	            try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+	           mediaPlayer.setChapter(3);
+
+	            try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+	            mediaListPlayer.playNext();
+	        }
+
+	    }
    
 }
