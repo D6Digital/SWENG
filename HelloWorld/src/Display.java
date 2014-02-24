@@ -58,7 +58,7 @@ public class Display implements ActionListener, MouseListener{
 	private static void createAndShowGUI()
 	{
 		NativeLibrary.addSearchPath(
-                RuntimeUtil.getLibVlcLibraryName(), "vlc-2.0.1"
+                RuntimeUtil.getLibVlcLibraryName(), "resources/lib/vlc-2.0.1"
             );
 	
     	
@@ -120,7 +120,7 @@ public class Display implements ActionListener, MouseListener{
     
     randompanel.repaint();
     
-    mediaPlayer.playMedia("bin/avengers.mp4");
+    mediaPlayer.playMedia("resources/video/avengers.mp4");
     
     
     

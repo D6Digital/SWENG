@@ -8,7 +8,7 @@ import com.sun.jna.NativeLibrary;
 
         public static void main(String[] args) {
         	NativeLibrary.addSearchPath(
-                    RuntimeUtil.getLibVlcLibraryName(), "vlc-2.0.1"
+                    RuntimeUtil.getLibVlcLibraryName(), "resources/lib/vlc-2.0.1"
             );
         	
             Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
