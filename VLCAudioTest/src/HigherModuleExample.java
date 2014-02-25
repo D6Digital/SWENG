@@ -9,6 +9,8 @@ public class HigherModuleExample {
     static JButton stopButton = new JButton();
     static JButton pauseButton = new JButton();
     static JButton playButton = new JButton();
+    static JButton nextButton = new JButton();
+    static JButton previousButton = new JButton();
     static JFrame mainFrame = new JFrame();
     static JPanel mainPanel = new JPanel();
     
@@ -17,12 +19,19 @@ public class HigherModuleExample {
         stopButton = musicPlayer.getStopButton();
         pauseButton = musicPlayer.getPauseButton();
         playButton = musicPlayer.getPlayButton();
+        nextButton = musicPlayer.getNextButton();
+        previousButton = musicPlayer.getPreviousButton();
         
         mainPanel.add(stopButton);
-        mainFrame.add(mainPanel);
+       // mainFrame.add(mainPanel);
         mainPanel.add(pauseButton);
-        mainFrame.add(mainPanel);
+       // mainFrame.add(mainPanel);
         mainPanel.add(playButton);
+       // mainFrame.add(mainPanel);
+        mainPanel.add(nextButton);
+        //mainFrame.add(mainPanel);
+        mainPanel.add(previousButton);
+        
         mainFrame.add(mainPanel);
         mainFrame.setVisible(true);
         mainFrame.validate();

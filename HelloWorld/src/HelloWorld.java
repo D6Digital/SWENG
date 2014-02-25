@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 public class HelloWorld extends JLabel{
 
 	/**
-	 * 
+	 * changes made by josh. this comment.
 	 */
 	private static final long serialVersionUID = 1L;
 	

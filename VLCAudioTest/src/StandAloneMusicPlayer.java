@@ -42,7 +42,6 @@ import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import uk.co.caprica.vlcj.player.embedded.videosurface.CanvasVideoSurface;
-import uk.co.caprica.vlcj.player.list.MediaList;
 import uk.co.caprica.vlcj.player.list.MediaListPlayer;
 import uk.co.caprica.vlcj.player.list.MediaListPlayerEventAdapter;
 import uk.co.caprica.vlcj.player.list.MediaListPlayerMode;
@@ -50,14 +49,17 @@ import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 import uk.co.caprica.vlcj.test.basic.PlayerControlsPanel;
 import uk.co.caprica.vlcj.test.list.TestMediaListEmbeddedPlayer;
 
+//import uk.co.caprica.vlcj.player.list.MediaList;
+import uk.co.caprica.vlcj.medialist.MediaList;
+
 /**
  * @author Josh Lant
  *
  */
 public class StandAloneMusicPlayer {
-	//static String vlcLibraryPath = "H:\\Users\\Dr. Gabber\\Desktop\\Work Programs\\eclipse-jee-juno-SR2-win32-x86_64\\eclipse\\SWENG\\VLC\\vlc-2.1.3";
+	static String vlcLibraryPath = "H:\\Users\\Dr. Gabber\\Desktop\\Work Programs\\eclipse-jee-juno-SR2-win32-x86_64\\eclipse\\SWENG\\VLC\\vlc-2.1.3";
 	//static String vlcLibraryPath = "C:\\xtemp\\SWENG\\VLC\\vlc-2.1.3";
-	static String vlcLibraryPath = "C:\\xtemp\\SWENG\\VLC\\vlc-2.0.1";
+	//static String vlcLibraryPath = "C:\\xtemp\\SWENG\\VLC\\vlc-2.0.1";
 	static DefaultListModel listModel = new DefaultListModel<String>();
     static JFrame mainFrame = new JFrame("mainFrame");
     static JFrame playlistFrame = new JFrame("playlistFrame");
@@ -66,11 +68,12 @@ public class StandAloneMusicPlayer {
     static Container contentPane;
     static EmbeddedMediaPlayer mediaPlayer;
     static MediaList mediaList;
+    static MediaListPlayer mediaListPlayer;
     private static final long serialVersionUID = 1L;
     static String currentPlayIndex;
-    //static String currentFilePath = "H:\\Users\\Dr. Gabber\\Desktop\\Work Programs\\eclipse-jee-juno-SR2-win32-x86_64\\eclipse\\SWENG\\VLCAudioTest\\Playlist";
+    static String currentFilePath = "H:\\Users\\Dr. Gabber\\Desktop\\Work Programs\\eclipse-jee-juno-SR2-win32-x86_64\\eclipse\\SWENG\\VLCAudioTest\\Playlist";
    // static String currentFilePath = "C:\\xtemp\\SWENG\\VLCAudioTest\\Playlist";
-    static String currentFilePath = "M:\\Year 2\\Engineering for Hearing and Voice\\Lab 1- Week 3\\Audio Samples";
+    //static String currentFilePath = "M:\\Year 2\\Engineering for Hearing and Voice\\Lab 1- Week 3\\Audio Samples";
     static String newFilePath = currentFilePath;
     static FileChooser fileChooser = new FileChooser(newFilePath);
     static Boolean isPaused = false;
@@ -201,10 +204,11 @@ public class StandAloneMusicPlayer {
     
     private void nextMedia() {
         //mediaPlayer.pl
+    	mediaListPlayer.playNext();
     }
     
     private void previousMedia() {
-        
+        mediaListPlayer.playPrevious();
     }
 
     private void adjustVolume(int volumePercent) {
@@ -311,7 +315,7 @@ public class StandAloneMusicPlayer {
 	
 	   private static EmbeddedMediaPlayer openMediaPlayer() {
 	       MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory();
-
+	       final EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
 	        Canvas canvas = new Canvas();
 	        canvas.setBackground(Color.black);
 	        CanvasVideoSurface videoSurface = mediaPlayerFactory.newVideoSurface(canvas);
@@ -319,7 +323,7 @@ public class StandAloneMusicPlayer {
 	        EmbeddedMediaPlayer mediaPlayer = mediaPlayerFactory.newEmbeddedMediaPlayer();
 	        mediaPlayer.setVideoSurface(videoSurface);
 
-	        MediaListPlayer mediaListPlayer = mediaPlayerFactory.newMediaListPlayer();
+	        mediaListPlayer = mediaPlayerFactory.newMediaListPlayer();
 
 //	        mediaListPlayer.addMediaListPlayerEventListener(new MediaListPlayerEventAdapter() {
 //	            @Override
@@ -342,7 +346,7 @@ public class StandAloneMusicPlayer {
 	        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	        f.setVisible(true);
 
-	        MediaList mediaList = mediaPlayerFactory.newMediaList();
+	      MediaList mediaList = mediaPlayerFactory.newMediaList();
 	      String[] options = {};
 	      ArrayList<String> thing = getFilenames(newFilePath);
 	      String beg = "M:\\Year 2\\Engineering for Hearing and Voice\\Lab 1- Week 3\\Audio Samples\\";
@@ -356,27 +360,34 @@ public class StandAloneMusicPlayer {
 	        mediaListPlayer.setMediaList(mediaList);
 	        mediaListPlayer.setMode(MediaListPlayerMode.LOOP);
 
-	        mediaListPlayer.play();
-
-	        // This looping is just for purposes of demonstration, ordinarily you would
-	        // not do this of course
-	        for(;;) {
-	            try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-	           mediaPlayer.setChapter(3);
-
-	            try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-	            mediaListPlayer.playNext();
-	        }
+	        
+		    mainFrame.setContentPane(mediaPlayerComponent);
+		    contentPane.add(mediaPlayerComponent, BorderLayout.EAST);
+		    //contentPane.add(mediaListPlayer, BorderLayout.EAST);
+		    return mediaPlayer;
+		    
+		    
+//	        mediaListPlayer.play();
+//
+//	        // This looping is just for purposes of demonstration, ordinarily you would
+//	        // not do this of course
+//	        for(;;) {
+//	            try {
+//                    Thread.sleep(500);
+//                } catch (InterruptedException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+//	           mediaPlayer.setChapter(3);
+//
+//	            try {
+//                    Thread.sleep(5000);
+//                } catch (InterruptedException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+//	            mediaListPlayer.playNext();
+//	        }
 
 	    }
    

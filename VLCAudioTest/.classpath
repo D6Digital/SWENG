@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="C:/xtemp/SWENG/VLC/vlcj-2.0.0/vlcj-1.2.2-test.jar"/>
-	<classpathentry kind="lib" path="C:/xtemp/SWENG/VLC/vlcj-2.0.0/vlcj-2.0.0.jar"/>
+	<classpathentry kind="lib" path="H:/Users/Dr. Gabber/Desktop/Work Programs/eclipse-jee-juno-SR2-win32-x86_64/eclipse/SWENG/VLC/vlcj-2.4.1/vlcj-2.4.1.jar"/>
+	<classpathentry kind="lib" path="H:/Users/Dr. Gabber/Desktop/Work Programs/eclipse-jee-juno-SR2-win32-x86_64/eclipse/SWENG/VLC/vlcj-2.4.1/vlcj-2.4.1-tests.jar"/>
 	<classpathentry kind="output" path="bin"/>
 	<referencedentry kind="lib" path="H:/Users/Dr. Gabber/Desktop/Work Programs/eclipse-jee-juno-SR2-win32-x86_64/eclipse/SWENG/VLC/vlcj-2.4.1/jna-3.5.2.jar" sourcepath="H:/Users/Dr. Gabber/Desktop/Work Programs/eclipse-jee-juno-SR2-win32-x86_64/eclipse/SWENG/VLC/vlc-2.0.1"/>
 </classpath>
