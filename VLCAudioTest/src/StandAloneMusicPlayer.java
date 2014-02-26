@@ -157,11 +157,12 @@ public class StandAloneMusicPlayer {
             public void actionPerformed(ActionEvent e)
             {
                 switch (playerMethodCaseName) {
-                case "stop":        stopMedia();        break;
-                case "pause":       pauseMedia();       break;
-                case "play":        playMedia();        break;
-                case "next":        nextMedia();        break;
-                case "previous":    previousMedia();    break;
+                case "stop":            stopMedia();        break;
+                case "pause":           pauseMedia();       break;
+                case "play":            playMedia();        break;
+                case "next":            nextMedia();        break;
+                case "previous":        previousMedia();    break;
+                case "openplaylist":    openPlaylist();     break;
                 default: break;
                 }
             }
@@ -169,6 +170,29 @@ public class StandAloneMusicPlayer {
             
         return buttonName; 
         
+    }
+    
+    private void setupListenerAndAction(final JSlider sliderName, final String playerMethodCaseName) {
+        sliderName.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent arg0) {
+                adjustVolume(sliderName.getValue());
+            }
+            
+        });
+        
+//        .addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e)
+//            {
+        
+    }
+
+    
+    public JButton getOpenPlaylistButton() {
+        JButton button = new JButton("Open Playlist");
+        setupListenerAndAction(button, "openplaylist");      
+        return button;     
     }
     
     public JButton getStopButton() {
@@ -201,6 +225,16 @@ public class StandAloneMusicPlayer {
         return button;     
     }
     
+    public JSlider getVolumeSlider() {
+        JSlider slider = new JSlider();
+        slider.setMinimum(0);
+        slider.setMaximum(100);
+        setupListenerAndAction(slider, "previous");
+        return slider;
+    }
+    
+
+
     private void pauseMedia() {
         if(isPaused == false) {
     	mediaPlayer.pause();
@@ -226,6 +260,9 @@ public class StandAloneMusicPlayer {
     }
 
     private void adjustVolume(int volumePercent) {
+        mediaPlayer.pause();
+    	mediaPlayer.setVolume(volumePercent);
+    	mediaPlayer.play();
     	
     }
     
@@ -238,7 +275,7 @@ public class StandAloneMusicPlayer {
     }
     
     private void openPlaylist() {
-    	
+    	playlistFrame.setVisible(true);
     }
     
     private void closePlaylist() {
@@ -269,7 +306,7 @@ public class StandAloneMusicPlayer {
         playlistFrame.add(playlistChooserPanel, BorderLayout.NORTH);
         playlistFrame.add(playPanel, BorderLayout.CENTER);
         playlistFrame.setSize(200, 300);
-        playlistFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //playlistFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         playlistFrame.pack();
         playlistFrame.setVisible(true);
         playlistFrame.validate(); 
@@ -389,29 +426,6 @@ public class StandAloneMusicPlayer {
 		    contentPane.add(mediaPlayerComponent, BorderLayout.EAST);
 		    //contentPane.add(mediaListPlayer, BorderLayout.EAST);
 		    return mediaPlayer;
-		    
-		    
-//	        mediaListPlayer.play();
-//
-//	        // This looping is just for purposes of demonstration, ordinarily you would
-//	        // not do this of course
-//	        for(;;) {
-//	            try {
-//                    Thread.sleep(500);
-//                } catch (InterruptedException e) {
-//                    // TODO Auto-generated catch block
-//                    e.printStackTrace();
-//                }
-//	           mediaPlayer.setChapter(3);
-//
-//	            try {
-//                    Thread.sleep(5000);
-//                } catch (InterruptedException e) {
-//                    // TODO Auto-generated catch block
-//                    e.printStackTrace();
-//                }
-//	            mediaListPlayer.playNext();
-//	        }
 
 	    }
    
