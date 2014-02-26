@@ -110,12 +110,21 @@ public class StandAloneMusicPlayer {
      */
     private void chooseNewPlaylist() {
     	newFilePath = fileChooser.getNewFilePath();
-    	if(currentFilePath != newFilePath) {
-    		if (newFilePath != null) {
+    	if((currentFilePath != newFilePath)  && (newFilePath != null)) {
     		ArrayList<String> files = getFilenames(newFilePath);
     		createList(files);
     		currentFilePath = newFilePath;
+    		System.out.println("size is " + mediaList.size());
+    		//for(int i = 0; i < mediaList.size(); i++) {
+    		mediaList.clear();
+    		
+    		//}
+    		String[] options = {};
+    		for(String filename : files) {
+    		mediaList.addMedia(newFilePath + "\\" + filename, options);	
     		}
+    		mediaListPlayer.setMediaList(mediaList);
+    		
     	}
 	}
 
@@ -125,12 +134,12 @@ public class StandAloneMusicPlayer {
 	 * @param newPlayIndex
 	 */
 	private void chooseFromPlaylist(String newFilePath, String newPlayIndex) {
-    	if(newPlayIndex != currentPlayIndex) {
-    		String media = newFilePath + "\\" + newPlayIndex;
-    		System.out.println(media);
-    		mediaPlayer.playMedia(media);
-    		currentPlayIndex = newPlayIndex;
-    	}
+//    	if(newPlayIndex != currentPlayIndex) {
+//    		String media = newFilePath + "\\" + newPlayIndex;
+//    		System.out.println(media);
+//    		mediaPlayer.playMedia(media);
+//    		currentPlayIndex = newPlayIndex;
+//    	}
 	}
     
     private void stopMedia() {
@@ -269,6 +278,8 @@ public class StandAloneMusicPlayer {
         }
         playPanel.add(playContents);
         playlistFrame.pack();
+        
+        
     }
 
     private static ArrayList<String> getFilenames(String newFilePath) {
@@ -346,7 +357,7 @@ public class StandAloneMusicPlayer {
 	        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	        f.setVisible(true);
 
-	      MediaList mediaList = mediaPlayerFactory.newMediaList();
+	      mediaList = mediaPlayerFactory.newMediaList();
 	      String[] options = {};
 	      ArrayList<String> thing = getFilenames(newFilePath);
 	      String beg = "M:\\Year 2\\Engineering for Hearing and Voice\\Lab 1- Week 3\\Audio Samples\\";
@@ -354,6 +365,7 @@ public class StandAloneMusicPlayer {
 	      mediaList.addMedia(newFilePath + "\\" + filename, options);
 	      }
 	      int x = mediaList.size();
+	      System.out.println("x = " + x);
 //	      for(int y = 1; y < x-1; y++) {
 //	          mediaList.removeMedia(0);
 //	      }
