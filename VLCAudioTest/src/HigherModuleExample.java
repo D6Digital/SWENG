@@ -26,7 +26,6 @@ public class HigherModuleExample {
         previousButton = musicPlayer.getPreviousButton();
         openPlaylistButton = musicPlayer.getOpenPlaylistButton();
         volumeSlider = musicPlayer.getVolumeSlider();
-        
         mainPanel.add(stopButton);
        // mainFrame.add(mainPanel);
         mainPanel.add(pauseButton);
