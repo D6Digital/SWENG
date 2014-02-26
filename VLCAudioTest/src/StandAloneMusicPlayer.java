@@ -33,6 +33,8 @@ import javax.swing.ListModel;
 import javax.swing.Painter;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
@@ -49,17 +51,18 @@ import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 import uk.co.caprica.vlcj.test.basic.PlayerControlsPanel;
 import uk.co.caprica.vlcj.test.list.TestMediaListEmbeddedPlayer;
 
-//import uk.co.caprica.vlcj.player.list.MediaList;
-import uk.co.caprica.vlcj.medialist.MediaList;
+import uk.co.caprica.vlcj.player.list.MediaList;
+//import uk.co.caprica.vlcj.medialist.MediaList;
 
 /**
  * @author Josh Lant
  *
  */
 public class StandAloneMusicPlayer {
-	static String vlcLibraryPath = "H:\\Users\\Dr. Gabber\\Desktop\\Work Programs\\eclipse-jee-juno-SR2-win32-x86_64\\eclipse\\SWENG\\VLC\\vlc-2.1.3";
+	//static String vlcLibraryPath = "H:\\Users\\Dr. Gabber\\Desktop\\Work Programs\\eclipse-jee-juno-SR2-win32-x86_64\\eclipse\\SWENG\\VLC\\vlc-2.1.3";
 	//static String vlcLibraryPath = "C:\\xtemp\\SWENG\\VLC\\vlc-2.1.3";
 	//static String vlcLibraryPath = "C:\\xtemp\\SWENG\\VLC\\vlc-2.0.1";
+	static String vlcLibraryPath = "M:\\Year 2\\VLC\\vlc-2.0.1";
 	static DefaultListModel listModel = new DefaultListModel<String>();
     static JFrame mainFrame = new JFrame("mainFrame");
     static JFrame playlistFrame = new JFrame("playlistFrame");
@@ -71,9 +74,9 @@ public class StandAloneMusicPlayer {
     static MediaListPlayer mediaListPlayer;
     private static final long serialVersionUID = 1L;
     static String currentPlayIndex;
-    static String currentFilePath = "H:\\Users\\Dr. Gabber\\Desktop\\Work Programs\\eclipse-jee-juno-SR2-win32-x86_64\\eclipse\\SWENG\\VLCAudioTest\\Playlist";
+   // static String currentFilePath = "H:\\Users\\Dr. Gabber\\Desktop\\Work Programs\\eclipse-jee-juno-SR2-win32-x86_64\\eclipse\\SWENG\\VLCAudioTest\\Playlist";
    // static String currentFilePath = "C:\\xtemp\\SWENG\\VLCAudioTest\\Playlist";
-    //static String currentFilePath = "M:\\Year 2\\Engineering for Hearing and Voice\\Lab 1- Week 3\\Audio Samples";
+    static String currentFilePath = "M:\\Year 2\\Engineering for Hearing and Voice\\Lab 1- Week 3\\Audio Samples";
     static String newFilePath = currentFilePath;
     static FileChooser fileChooser = new FileChooser(newFilePath);
     static Boolean isPaused = false;
@@ -100,7 +103,7 @@ public class StandAloneMusicPlayer {
    
     private void musicPlayerLoop() {
         String newPlayIndex = (String) playContents.getSelectedValue();
-        chooseFromPlaylist(newFilePath, newPlayIndex);
+        //chooseFromPlaylist(newFilePath, newPlayIndex);
         chooseNewPlaylist();
     }
     
@@ -115,10 +118,9 @@ public class StandAloneMusicPlayer {
     		createList(files);
     		currentFilePath = newFilePath;
     		System.out.println("size is " + mediaList.size());
-    		//for(int i = 0; i < mediaList.size(); i++) {
-    		mediaList.clear();
-    		
-    		//}
+    		for(int i = mediaList.size(); i >= 0; i--) {
+    		mediaList.removeMedia(i);
+    		}
     		String[] options = {};
     		for(String filename : files) {
     		mediaList.addMedia(newFilePath + "\\" + filename, options);	
@@ -133,17 +135,20 @@ public class StandAloneMusicPlayer {
 	 * @param newFilePath
 	 * @param newPlayIndex
 	 */
-	private void chooseFromPlaylist(String newFilePath, String newPlayIndex) {
+	private static void chooseFromPlaylist() {
 //    	if(newPlayIndex != currentPlayIndex) {
 //    		String media = newFilePath + "\\" + newPlayIndex;
 //    		System.out.println(media);
+	   
+	    
+	    mediaListPlayer.playItem(playContents.getSelectedIndex());
 //    		mediaPlayer.playMedia(media);
 //    		currentPlayIndex = newPlayIndex;
 //    	}
 	}
     
     private void stopMedia() {
-    	mediaPlayer.stop();
+    	mediaListPlayer.stop();
     }
     
     private JButton setupListenerAndAction(JButton buttonName, final String playerMethodCaseName) {
@@ -278,8 +283,15 @@ public class StandAloneMusicPlayer {
         }
         playPanel.add(playContents);
         playlistFrame.pack();
+        playContents.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent arg0) {
+                // TODO Auto-generated method stub
+                chooseFromPlaylist();
+            }
+        });
         
-        
+ 
     }
 
     private static ArrayList<String> getFilenames(String newFilePath) {

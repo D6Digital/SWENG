@@ -31,6 +31,7 @@ public class HigherModuleExample {
         mainPanel.add(nextButton);
         //mainFrame.add(mainPanel);
         mainPanel.add(previousButton);
+        mainFrame.setSize(200, 400);
         
         mainFrame.add(mainPanel);
         mainFrame.setVisible(true);
