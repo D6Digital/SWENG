@@ -16,6 +16,7 @@ import org.junit.Test;
  *
  */
 public class MusButtonTest {
+    private static final long SLEEPMS = 2000;
     static JButton 
     stopButton, playButton, pauseButton, nextButton, previousButton, openPlaylistButton 
     = new JButton();
@@ -51,7 +52,7 @@ public class MusButtonTest {
 
     @SuppressWarnings("deprecation")
     @Test
-    public void steps1to7() {
+    public void step1to2() {
 
         // Step 1. A correctly labelled play button is retrieved from  class StandAloneMusicPlayer.        
         assertEquals("The play button was not retrieved correctly",
@@ -61,7 +62,7 @@ public class MusButtonTest {
         assertEquals("The play button was not retrieved correctly, it was: " + playButton.getLabel(),
                 "Play", playButton.getLabel());
         
-        // Step 2. A correctly labelled stop button is retrieved from  class StandAloneMusicPlayer.
+        // Step 1. A correctly labelled stop button is retrieved from  class StandAloneMusicPlayer.
         assertEquals("The stop button was not retrieved correctly",
                 true, stopButton.isDisplayable());
         assertEquals("The stop button was not retrieved correctly",
@@ -69,7 +70,7 @@ public class MusButtonTest {
         assertEquals("The stop button was not retrieved correctly, it was: " + stopButton.getLabel(),
                 "Stop", stopButton.getLabel());
         
-        // Step 3. A correctly labelled pause button is retrieved from  class StandAloneMusicPlayer.
+        // Step 1. A correctly labelled pause button is retrieved from  class StandAloneMusicPlayer.
         assertEquals("The pause button was not retrieved correctly",
                 true, pauseButton.isDisplayable());
         assertEquals("The pause button was not retrieved correctly",
@@ -77,7 +78,7 @@ public class MusButtonTest {
         assertEquals("The pause button was not retrieved correctly, it was: " + pauseButton.getLabel(),
                 "Pause", pauseButton.getLabel());
         
-        // Step 4. A correctly labelled next button is retrieved from  class StandAloneMusicPlayer.
+        // Step 1. A correctly labelled next button is retrieved from  class StandAloneMusicPlayer.
         assertEquals("The next button was not retrieved correctly",
                 true, nextButton.isDisplayable());
         assertEquals("The next button was not retrieved correctly",
@@ -85,23 +86,13 @@ public class MusButtonTest {
         assertEquals("The next button was not retrieved correctly, it was: " + nextButton.getLabel(),
                 "Next", nextButton.getLabel());
         
-        // Step 5. A correctly labelled previous button is retrieved from  class StandAloneMusicPlayer.
+        // Step 1. A correctly labelled previous button is retrieved from  class StandAloneMusicPlayer.
         assertEquals("The previous button was not retrieved correctly",
                 true, previousButton.isDisplayable());
         assertEquals("The previous button was not retrieved correctly",
                 true, previousButton.isEnabled());
         assertEquals("The previous button was not retrieved correctly, it was: " + previousButton.getLabel(),
                 "Previous", previousButton.getLabel());
-        
-        // Step 6. A correctly labelled play button is retrieved from  class StandAloneMusicPlayer.
-        assertEquals("The volumeSlider was not retrieved correctly",
-                true, volumeSlider.isDisplayable());
-        assertEquals("The volumeSlider was not retrieved correctly",
-                true, volumeSlider.isEnabled());
-        assertEquals("The max volume for volumeSlider was not correct, it was: " + volumeSlider.getMaximum(),
-                100, volumeSlider.getMaximum());
-        assertEquals("The min volume for volumeSlider was not correct, it was: " + volumeSlider.getMinimum(),
-                0, volumeSlider.getMinimum());
         
         // Step 7. A correctly labelled open playlist button is retrieved from  class StandAloneMusicPlayer.
         assertEquals("The openPlaylist button was not retrieved correctly",
@@ -110,6 +101,52 @@ public class MusButtonTest {
                 true, openPlaylistButton.isEnabled());
         assertEquals("The openPlaylist button was not retrieved correctly, it was: " + openPlaylistButton.getLabel(),
                 "Open Playlist", openPlaylistButton.getLabel());
+        
+        // Step 2. A correctly labelled play button is retrieved from  class StandAloneMusicPlayer.
+        assertEquals("The volumeSlider was not retrieved correctly",
+                true, volumeSlider.isDisplayable());
+        assertEquals("The volumeSlider was not retrieved correctly",
+                true, volumeSlider.isEnabled());
+        assertEquals("The max volume for volumeSlider was not correct, it was: " + volumeSlider.getMaximum(),
+                100, volumeSlider.getMaximum());
+        assertEquals("The min volume for volumeSlider was not correct, it was: " + volumeSlider.getMinimum(),
+                0, volumeSlider.getMinimum());
+    }
+    
+    @Test
+    public void steps3toX() throws InterruptedException {
+        
+        /**TODO Step 3. fails out due to issue #2. Uncomment when issue resolved.
+        playButton.doClick();
+        Thread.sleep(SLEEPMS);
+        assertEquals("The play button does not cause an item in the list to begin playing.", true, musicPlayer.mediaPlayer.isPlaying());
+        */
+        
+        // Step 4. When the user presses pause, the media will stop playing.
+        musicPlayer.playContents.setSelectedIndex(0);
+        Thread.sleep(SLEEPMS);
+        assertTrue(musicPlayer.mediaPlayer.isPlaying());
+        pauseButton.doClick();
+        Thread.sleep(SLEEPMS);
+        float x1 = musicPlayer.mediaPlayer.getPosition();
+        Thread.sleep(SLEEPMS);
+        float x2 = musicPlayer.mediaPlayer.getPosition();
+        assertEquals("The pause button does not cause an item in the list to stop playing.", true, x1 == x2);
+        
+        // Step 5. When the user presses play again, the media will begin playing once again.
+        pauseButton.doClick();
+        Thread.sleep(SLEEPMS);
+        x1 = musicPlayer.mediaPlayer.getPosition();
+        assertEquals("The pause button does not cause an item in the list to stop playing.", true, x1 != x2);
+        
+        // Step 6. When the user presses stop, and then play again, the media will begin from the start of the same media item.
+        stopButton.doClick();
+        Thread.sleep(SLEEPMS);
+        playButton.doClick();
+        x1 = musicPlayer.mediaPlayer.getPosition();
+        boolean areEqual = x1 == 0.0;
+        assertEquals("The stop button does not set the position of the media back to zero, it was: " + x1, true, areEqual);
+        
         
     }
 

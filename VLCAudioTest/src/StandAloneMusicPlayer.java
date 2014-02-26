@@ -80,7 +80,8 @@ public class StandAloneMusicPlayer {
     static String newFilePath = currentFilePath;
     static FileChooser fileChooser = new FileChooser(newFilePath);
     static Boolean isPaused = false;
-
+    
+    
     /**
      * Constructor for 
      */
