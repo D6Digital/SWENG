@@ -14,6 +14,7 @@ import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
 //Comment by Chris S
 //Second comment by Chris S
+//Thire comment by Chris S
 
 //Josh D mixing things up!!!!!
 public class Display extends JPanel{
