@@ -24,11 +24,13 @@ public class MusButtonTest {
     static JFrame mainFrame = new JFrame();
     static JPanel mainPanel = new JPanel();
     StandAloneMusicPlayer  musicPlayer;
+    static String currentFilePath = "M:\\Year 2\\Engineering for Hearing and Voice\\Lab 1- Week 3\\Audio Samples";
+    static String vlcLibraryPath = "M:\\Year 2\\VLC\\vlc-2.0.1";
     
     
     @Before
     public void setUp() throws Exception {
-        musicPlayer = new StandAloneMusicPlayer();
+        musicPlayer = new StandAloneMusicPlayer(vlcLibraryPath, currentFilePath);
         stopButton = musicPlayer.getStopButton();
         pauseButton = musicPlayer.getPauseButton();
         playButton = musicPlayer.getPlayButton();
@@ -94,7 +96,7 @@ public class MusButtonTest {
         assertEquals("The previous button was not retrieved correctly, it was: " + previousButton.getLabel(),
                 "Previous", previousButton.getLabel());
         
-        // Step 7. A correctly labelled open playlist button is retrieved from  class StandAloneMusicPlayer.
+        // Step 1. A correctly labelled open playlist button is retrieved from  class StandAloneMusicPlayer.
         assertEquals("The openPlaylist button was not retrieved correctly",
                 true, openPlaylistButton.isDisplayable());
         assertEquals("The openPlaylist button was not retrieved correctly",

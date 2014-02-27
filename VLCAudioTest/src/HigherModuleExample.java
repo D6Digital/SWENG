@@ -16,9 +16,11 @@ public class HigherModuleExample {
     static JSlider volumeSlider = new JSlider();
     static JFrame mainFrame = new JFrame();
     static JPanel mainPanel = new JPanel();
+    static String currentFilePath = "M:\\Year 2\\Engineering for Hearing and Voice\\Lab 1- Week 3\\Audio Samples";
+    static String vlcLibraryPath = "M:\\Year 2\\VLC\\vlc-2.0.1";
     
     public static void main(String[] args) throws IOException {
-        StandAloneMusicPlayer  musicPlayer = new StandAloneMusicPlayer();
+        StandAloneMusicPlayer  musicPlayer = new StandAloneMusicPlayer(vlcLibraryPath, currentFilePath);
         stopButton = musicPlayer.getStopButton();
         pauseButton = musicPlayer.getPauseButton();
         playButton = musicPlayer.getPlayButton();
