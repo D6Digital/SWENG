@@ -12,6 +12,8 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import uk.co.caprica.vlcj.player.embedded.videosurface.CanvasVideoSurface;
 import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
+//Comment by Chris S
+
 //Josh D mixing things up!!!!!
 public class Display extends JPanel{
 
